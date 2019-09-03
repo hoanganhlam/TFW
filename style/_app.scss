@@ -1,0 +1,263 @@
+$primary: #28b76c;
+
+// Import only what you need from Bulma
+@import "../node_modules/bulma/sass/utilities/_all.sass";
+@import "../node_modules/bulma/sass/base/_all.sass";
+@import "../node_modules/bulma/sass/elements/button.sass";
+@import "../node_modules/bulma/sass/elements/container.sass";
+@import "../node_modules/bulma/sass/elements/title.sass";
+@import "../node_modules/bulma/sass/form/_all.sass";
+@import "../node_modules/bulma/sass/components/navbar.sass";
+@import "../node_modules/bulma/sass/components/card";
+@import "../node_modules/bulma/sass/elements/icon";
+@import "../node_modules/bulma/sass/elements/content";
+@import "../node_modules/bulma/sass/layout/hero.sass";
+@import "../node_modules/bulma/sass/components/level.sass";
+@import "../node_modules/bulma/sass/elements/table";
+@import "../node_modules/bulma/sass/layout/section.sass";
+
+.container {
+    &.large {
+        max-width: 1080px;
+    }
+
+    &.medium {
+        max-width: 888px;
+    }
+
+    &.small {
+        max-width: 686px;
+    }
+
+    padding: 0 1rem;
+}
+
+.footer {
+    background-color: #ffffff;
+    padding: 3rem 1.5rem 3rem;
+}
+
+.main-page {
+    min-height: calc(100vh - 172px);
+}
+
+.bt_16 {
+    margin-bottom: 1rem;
+}
+
+.bt_32 {
+    margin-bottom: 2rem !important;
+}
+
+.section {
+    padding: 0;
+}
+
+
+.taxonomy {
+    .button {
+        margin-right: 16px;
+    }
+}
+
+span + i {
+    margin-left: 10px;
+}
+
+.title.is-3 {
+    font-size: 1.5rem;
+}
+
+.level:not(:last-child),
+.title:not(:last-child) {
+    margin-bottom: 1rem;
+}
+
+.meta-line {
+    border-bottom: 1px solid #EEE;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    font-size: 14px;
+}
+
+.read-more {
+    font-size: 14px;
+}
+
+.is-bold {
+    font-weight: bold;
+}
+
+.input, .taginput .taginput-container.is-focusable, .textarea, .select select,
+.button, .input, .textarea, .select select, .file-cta, .file-name {
+    border-radius: 2px;
+}
+
+.public-job-details-spec .icon {
+    margin-right: 10px;
+}
+
+.label {
+    font-weight: normal;
+}
+
+.login-separator {
+    position: relative;
+    text-align: center;
+}
+
+.login-separator .text {
+    background-color: #fff;
+    display: inline-block;
+    font-size: 16px;
+    padding: 0 10px;
+    position: relative;
+    z-index: 2;
+}
+
+.login-separator:after {
+    content: "";
+    position: absolute;
+    top: calc(50% - 1px);
+    right: 0;
+    left: 0;
+    border-bottom: 2px dashed #7b7e7f;
+    z-index: 1;
+}
+
+.fullwidth .dropdown-menu,
+.file-name,
+.file.is-boxed .file-label,
+.file-input {
+    width: 100%;
+    max-width: 100%;
+}
+
+.datepicker .datepicker-content {
+    height: unset;
+}
+
+.is-center {
+    text-align: center;
+}
+
+.title a {
+    color: #2d3031;
+}
+
+.selectable {
+    cursor: pointer;
+    position: relative;
+
+    &.selected {
+        &:after {
+            content: "";
+            background: #00000069;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+        }
+
+        .fas {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 2;
+            color: #FFF;
+        }
+    }
+}
+
+.dropdown-content {
+    border-radius: 0;
+}
+
+.sidebar-bg {
+    position: absolute;
+    bottom: 0;
+    right: 50%;
+    left: 0;
+    top: 0;
+    background: #f5f5f5;
+}
+
+.menu-list a {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.fullwidth {
+    width: 100%;
+
+    .select {
+        width: 100%;
+
+        select {
+            width: 100%;
+        }
+    }
+}
+
+.tile.is-parent {
+    padding: 1rem;
+}
+
+.icon + .control,
+.icon + span {
+    margin-left: 10px;
+}
+
+.no-bd {
+    input {
+        border: 0;
+        box-shadow: inset 1px -1px 5px -1px rgba(10, 10, 10, 0.1);
+    }
+}
+
+.button .icon:first-child:not(:last-child) {
+    margin-left: 0;
+    margin-right: 0;
+    height: unset;
+    width: unset;
+}
+
+.footer {
+    background-color: #f5f5f5;
+    border-top: 1px solid #DDD;
+    margin-top: -1px;
+}
+
+.card-content {
+    padding: 1rem;
+}
+
+.column {
+    padding: 0.5rem;
+}
+
+.columns {
+    margin-left: -0.5rem;
+    margin-right: -0.5rem;
+    margin-top: -0.5rem;
+}
+
+.columns:last-child {
+    margin-bottom: -0.5rem;
+}
+
+.is-main {
+    background: #FFF;
+    min-height: calc(100vh - 52px);
+    border-left: 1px solid #ddd;;
+    border-bottom: 1px solid #ddd;
+    margin-left: -1px;
+}
+
+.card.bt_16 {
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
