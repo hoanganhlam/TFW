@@ -86,7 +86,7 @@ exports.list = async (req, res, next) => {
     }
 
     if (req.query.user) {
-        query['user.username'] = req.query.user
+        query['user'] = ObjectId(req.query.user)
     }
 
     if (user === null || (user && user.email !== 'lam@trip.vn')) {

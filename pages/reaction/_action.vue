@@ -1,7 +1,7 @@
 <template>
     <div class="tile is-ancestor" style="margin-top: 0; margin-bottom: 0">
         <div class="tile is-vertical is-3" style="margin-top: 1rem">
-
+            <l-topic type="tag" label="Other tag" :data="topics"></l-topic>
         </div>
         <div class="tile is-parent is-main">
             <div style="width: 100%">
@@ -58,10 +58,12 @@
             query.action = action
             query.pageSize = 10
             let res = await app.$api.fact.list(query)
+            let topics = await app.$api.taxonomy.list({kind: 'tag'})
             return {
                 res: res,
                 title: title,
-                query: query
+                query: query,
+                topics: topics
             }
         },
         data() {

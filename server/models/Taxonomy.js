@@ -6,9 +6,9 @@ let NewSchema = new mongoose.Schema({
     slug: {type: String, lowercase: true, unique: true, sparse: true},
     title: String,
     description: String,
-    isPublic: {type: Boolean, default: false},
-    isObject: {type: Boolean, default: false},
-    kind: String,
+    isPublic: {type: Boolean, default: true},
+    isObject: {type: Boolean, default: true},
+    kind: [String],
     photos: [{type: mongoose.Schema.Types.ObjectId, ref: 'File'}],
 }, {
     timestamps: true,
@@ -42,6 +42,8 @@ NewSchema.methods.toJsonFor = function () {
         slug: this.slug,
         title: this.title,
         description: this.description,
+        isObject: this.isObject,
+        kind: this.kind,
         tempPhotos
     }
 };

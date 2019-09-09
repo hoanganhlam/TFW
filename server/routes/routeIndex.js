@@ -32,7 +32,7 @@ async function this_day(user, query) {
                     path: 'facts', populate: {path: 'photo', model: 'File'}
                 }
             })
-            .limit(10)
+            .limit(5)
             .catch(err => {
                 console.log(err);
             })

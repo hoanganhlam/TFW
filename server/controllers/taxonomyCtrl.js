@@ -27,12 +27,25 @@ exports.create = async (req, res, next) => {
 };
 
 exports.list = async (req, res, next) => {
+    let query = {}
+
     const pageSize = Number.parseInt(req.query.pageSize) || 10;
     const page = Number.parseInt(req.query.page) || 1;
+
     try {
-        const searchQuery = req.query.search || ''
-        const regex = new RegExp(escapeRegex(searchQuery), 'gi');
-        const results = await TaxonomyModel.find({title: regex})
+        const searchQuery = req.query.search
+        const kind = req.query.kind
+        const relatedWith = req.query.relatedWith
+        if (searchQuery) {
+            query['title'] = new RegExp(escapeRegex(searchQuery), 'gi');
+        }
+        if (kind) {
+            query['kind'] = kind
+        }
+        if (relatedWith) {
+
+        }
+        const results = await TaxonomyModel.find(query)
             .populate({path: 'facts', populate: {path: 'photo', model: 'File'}})
             .skip((pageSize * page) - pageSize)
             .limit(pageSize);
@@ -61,12 +74,12 @@ exports.retrieve = async (req, res, next) => {
         fact.total = all.length
         const contributors = [];
         const map = new Map();
-        // for (const item of all) {
-        //     if (!map.has(item.user._id)) {
-        //         map.set(item.user._id, true);
-        //         contributors.push(item.user);
-        //     }
-        // }
+        for (const item of all) {
+            if (item.user && !map.has(item.user._id)) {
+                map.set(item.user._id, true);
+                contributors.push(item.user);
+            }
+        }
         FactModel
             .find({taxonomies: {$all: req.instance}}).populate('user').populate('taxonomies').populate('photo')
             .skip((pageSize * page) - pageSize)
@@ -84,7 +97,7 @@ exports.retrieve = async (req, res, next) => {
 };
 
 exports.update = (req, res) => {
-    let data = getBody(req, ['title', 'description', 'isPublic', 'isObject', 'photos']);
+    let data = getBody(req, ['title', 'description', 'isPublic', 'isObject', 'kind', 'photos']);
     for (let field of Object.keys(data)) {
         if (typeof data[field] !== 'undefined') {
             req.instance[field] = data[field];

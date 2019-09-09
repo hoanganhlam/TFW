@@ -63,10 +63,12 @@
                     }
                     this.isVoted = await this.$axios.$post(`/facts/${this.fact._id}/vote/`, data)
                 } else {
-                    this.$notification['warning']({
-                        message: 'Member\'s feature',
-                        description: 'You must login to vote!',
-                    });
+                    this.$buefy.snackbar.open({
+                        message: 'Sorry, You must login to vote this!',
+                        type: 'is-warning',
+                        position: 'is-bottom',
+                        actionText: 'OK'
+                    })
                 }
             },
             checkVoted(value) {

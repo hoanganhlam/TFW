@@ -4,8 +4,8 @@ const baseFields = ['createdAt', 'updatedAt']
 
 
 const SCHEMA = {
-    'facts': baseFields.concat(['contentShort', 'taxonomies', 'date', 'contentLong']),
-    'taxonomies': baseFields.concat(['title', 'description', 'slug'])
+    'facts': baseFields.concat(['contentShort', 'taxonomies', 'date', 'contentLong', 'search']),
+    'taxonomies': baseFields.concat(['title', 'description', 'slug', 'isObject', 'kind', 'search'])
 }
 
 const fields = [
@@ -29,6 +29,14 @@ const fields = [
         type: 'text',
         show: true,
         update: true
+    },
+    {
+        field: 'search',
+        label: 'Tìm kiếm',
+        type: 'text',
+        show: false,
+        update: false,
+        filter: true
     },
     {
         field: 'slug',
@@ -64,6 +72,20 @@ const fields = [
         field: 'date',
         label: 'Thời gian',
         type: 'date',
+        show: false,
+        update: true
+    },
+    {
+        field: 'kind',
+        label: 'Kiểu',
+        type: 'hashtag',
+        show: false,
+        update: true
+    },
+    {
+        field: 'isObject',
+        label: 'Đối tượng',
+        type: 'boolean',
         show: false,
         update: true
     },

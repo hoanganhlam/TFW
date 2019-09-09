@@ -5,7 +5,7 @@
             :to="'?page=' + (current - 1)"
             class="pagination-previous"
             :disabled="!hasPrev"
-            @click.prevent="prev"
+            @click.prevent="prev()"
             :aria-label="ariaPreviousLabel">
             <b-icon icon="chevron-left" :pack="iconPack" both aria-hidden="true"/>
         </n-link>
@@ -14,7 +14,7 @@
             :to="'?page=' + (current + 1)"
             class="pagination-next"
             :disabled="!hasNext"
-            @click.prevent="next"
+            @click.prevent="next()"
             :aria-label="ariaNextLabel">
             <b-icon icon="chevron-right" :pack="iconPack" both aria-hidden="true"/>
         </n-link>

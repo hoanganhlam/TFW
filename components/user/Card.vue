@@ -1,23 +1,24 @@
 <template>
-    <div></div>
+    <div v-if="data">
+        <n-link :to="'/member/' + data.username">
+            <div class="image">
+                <img v-if="avatar" :src="avatar" alt="">
+                <img v-else src="/avatar.png" alt="">
+            </div>
+        </n-link>
+    </div>
 </template>
 
 <script>
     export default {
         name: "Card",
         props: {
-            user: {
-
-            }
+            data: {}
         },
         computed: {
             avatar() {
-                if (this.user.avatar) {
-                    if (this.user.avatar._id) {
-                        return this.user.avatar
-                    } else if (this.user.avatar.length) {
-                        return this.user.avatar[0]
-                    }
+                if (this.data.avatar && this.data.avatar._id) {
+                    return this.data.avatar.size['100_100']
                 }
                 return null
             }

@@ -5,19 +5,20 @@
         </div>
         <div class="tile is-parent is-main">
             <div style="width: 100%">
-                <h1>TheFactWall.com, Welcome!</h1>
-                <hr class="is-small">
+                <h1 class="title is-4 bt_32">TheFactWall.com, Welcome!</h1>
                 <div class="example bt_32">
                     <div class="button-left">On This day</div>
                     <div class="button-right">
                         <n-link to="/onthisday">more</n-link>
                     </div>
                     <div class="example-component">
-                        <div v-for="fact in otd.results" :key="fact._id" style="margin-bottom: 0.5rem">
-                            <b-tag v-if="fact.date">{{moment(fact.date).year()}}</b-tag>
-                            <n-link :to="'/' + fact._id">{{fact.contentShort}}</n-link>
-                            <hr class="is-mini">
-                        </div>
+                        <ul>
+                            <li v-for="fact in otd.results" :key="fact._id">
+                                <b-tag v-if="fact.time">{{fact.time.year}}</b-tag>
+                                <n-link :to="'/' + fact._id">{{fact.contentShort}}</n-link>
+                                <hr class="is-mini"/>
+                            </li>
+                        </ul>
                     </div>
                 </div>
                 <hr class="is-small">

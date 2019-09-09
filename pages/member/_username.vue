@@ -27,7 +27,7 @@
             if (params.username === 'me') {
                 params.username = app.$auth.user.username
             }
-            let res = await app.$axios.$get(`/facts/?user=${params.username}&page_size=10`, {
+            let res = await app.$axios.$get(`/facts/?user=${user._id}&page_size=10`, {
                 params: query
             })
             query.user = params.username

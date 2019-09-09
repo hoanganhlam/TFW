@@ -1,11 +1,11 @@
 <template>
     <div>
         <div class="columns is-multiline is-mobile">
-            <div class="column is-6" v-for="fact in facts" :key="fact._id">
+            <div class="column is-6" v-for="fact in res.results" :key="fact._id">
                 <c-fact class="bt_16" :fact="fact" :cover="true"></c-fact>
             </div>
         </div>
-        <f-pagination icon-pack="fa" :total="data.total" :per-page="pageSize" :current="current"></f-pagination>
+        <f-pagination icon-pack="fa" :total="res.total" :per-page="pageSize" :current="current" @change="fetch"/>
     </div>
 </template>
 
@@ -38,7 +38,12 @@
         },
         data() {
             return {
-                facts: this.data.results
+                res: this.data
+            }
+        },
+        methods: {
+            async fetch(page) {
+                this.res = await this.$api.fact.list({pageSize: this.pageSize, page: page})
             }
         },
         computed: {
@@ -48,8 +53,7 @@
         },
         watch: {
             data() {
-                this.facts = []
-                this.facts = this.data.results
+                this.res = this.data
             }
         },
     }

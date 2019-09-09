@@ -1,16 +1,17 @@
 <template>
     <div class="tile is-ancestor" style="margin-top: 0; margin-bottom: 0">
         <div class="tile is-vertical is-3" style="margin-top: 1rem">
-            <l-topic :data="{results: fact.taxonomies}"></l-topic>
+            <l-topic label="Fact's topics" :data="{results: fact.taxonomies}"></l-topic>
         </div>
         <div class="tile is-parent is-main">
             <div style="width: 100%">
                 <c-fact class="bt_32" :fact="fact"></c-fact>
                 <div class="comments">
                     <div class="content" v-if="$auth.loggedIn">
-                        <textarea v-model="comment" style="margin-bottom: 0.5rem" class="textarea" rows="2" placeholder="Your idea...">
-                        </textarea>
-                        <div class="level">
+                        <textarea v-model="comment" style="margin-bottom: 0.5rem"
+                                  class="textarea" rows="2"
+                                  placeholder="Your idea..."></textarea>
+                        <div class="level is-mobile">
                             <div class="level-left">
                                 <b-button icon-pack="fa" icon-left="user">
                                     <strong>{{convertName($auth.user)}}</strong>
@@ -88,11 +89,21 @@
             },
             async handleSubmit() {
                 this.submitting = true
-                let res = await this.$api.fact.comment(this.fact._id, {
-                    content: this.comment
-                })
-                this.fact.comments.push(res)
-                this.submitting = false
+                if (this.comment === null || this.comment.length < 20) {
+                    this.$buefy.snackbar.open({
+                        message: 'Your comment is too short!',
+                        type: 'is-warning',
+                        position: 'is-bottom',
+                        actionText: 'OK',
+                    })
+                } else {
+                    let res = await this.$api.fact.comment(this.fact._id, {
+                        content: this.comment
+                    })
+                    this.commment = null
+                    this.fact.comments.push(res)
+                    this.submitting = false
+                }
             }
         },
         computed: {

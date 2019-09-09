@@ -10,27 +10,27 @@
             </template>
             <template slot="start">
                 <b-navbar-item tag="div">
-                    <b-button tag="router-link" to="/reaction/wtf/" icon-pack="fas" icon-left="surprise">WTF</b-button>
+                    <n-link to="/reaction/wtf/" icon-pack="fas" icon-left="surprise">WTF</n-link>
                 </b-navbar-item>
                 <b-navbar-item tag="div">
-                    <b-button tag="router-link" to="/reaction/interesting/" icon-pack="fas" icon-left="grin-stars">
+                    <n-link to="/reaction/interesting/" icon-pack="fas" icon-left="grin-stars">
                         Interesting
-                    </b-button>
+                    </n-link>
                 </b-navbar-item>
                 <b-navbar-item tag="div">
-                    <b-button tag="router-link" to="/reaction/unbelievable/" icon-pack="fas" icon-left="surprise">
+                    <n-link to="/reaction/unbelievable/" icon-pack="fas" icon-left="surprise">
                         Unbelievable
-                    </b-button>
+                    </n-link>
                 </b-navbar-item>
                 <b-navbar-item tag="div">
-                    <b-button tag="router-link" to="/reaction/fun/" icon-pack="fas" icon-left="laugh-beam">Fun
-                    </b-button>
+                    <n-link to="/reaction/fun/" icon-pack="fas" icon-left="laugh-beam">Fun
+                    </n-link>
                 </b-navbar-item>
                 <b-navbar-item tag="div">
-                    <b-button tag="router-link" to="/random/" icon-pack="fas" icon-left="random">Random</b-button>
+                    <n-link to="/random/" icon-pack="fas" icon-left="random">Random</n-link>
                 </b-navbar-item>
                 <b-navbar-item tag="div">
-                    <b-button tag="router-link" to="/onthisday/" icon-pack="fas" icon-left="calendar">On This Day
+                    <b-button type="is-warning" tag="router-link" to="/onthisday/" icon-pack="fas" icon-left="calendar">On This Day
                     </b-button>
                 </b-navbar-item>
             </template>

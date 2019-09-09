@@ -1,7 +1,17 @@
 <template>
     <div class="tile is-ancestor" style="margin-top: 0; margin-bottom: 0">
         <div class="tile is-vertical is-3" style="margin-top: 1rem">
-            <l-topic :data="{results: fact.taxonomies}"></l-topic>
+            <aside class="sidebar">
+                <div class="sidebar-menu">
+                    <h4 class="sidebar-label">Contributors</h4>
+                    <div class="columns is-multiline is-mobile is-gapless">
+                        <div class="column is-4" v-for="contributor in contributors" :key="contributor._id">
+                            <u-fact :data="contributor"></u-fact>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+            <l-topic label="Related Topics" :data="topics"></l-topic>
         </div>
         <div class="tile is-parent is-main">
             <div style="width: 100%">
@@ -32,12 +42,14 @@
             } else {
                 params.sub = params.sub + ' facts'
             }
+            let topics = await app.$api.taxonomy.list({relatedWith: res.instance._id})
             return {
                 topic: res.instance,
                 title: params.sub + ' about ' + res.instance.title,
                 query: query,
                 fact: res.fact,
                 contributors: res.contributors,
+                topics
             }
         },
         data() {

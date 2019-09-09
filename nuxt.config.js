@@ -9,6 +9,9 @@ module.exports = {
     ** Headers of the page
     */
     head: {
+        htmlAttrs: {
+            lang: 'en',
+        },
         title: process.env.npm_package_name || '',
         meta: [
             {charset: 'utf-8'},
@@ -16,7 +19,8 @@ module.exports = {
             {hid: 'description', name: 'description', content: process.env.npm_package_description || ''}
         ],
         link: [
-            {rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'}
+            {rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'},
+            {rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Open+Sans:400,700|Space+Mono:400,700&display=swap&subset=vietnamese'}
         ]
     },
     /*
