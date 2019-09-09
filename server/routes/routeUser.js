@@ -15,7 +15,6 @@ router.param('username', async function (req, res, next, id) {
 });
 
 /* GET home page. */
-router.get('/dkmvkl', userCtrl.fakerr);
 router.get('/', userCtrl.list);
 router.post('/', userCtrl.create);
 router.get('/me', auth.required, userCtrl.me);

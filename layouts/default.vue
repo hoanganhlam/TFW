@@ -13,19 +13,25 @@
                     <b-button tag="router-link" to="/reaction/wtf/" icon-pack="fas" icon-left="surprise">WTF</b-button>
                 </b-navbar-item>
                 <b-navbar-item tag="div">
-                    <b-button tag="router-link" to="/reaction/interesting/" icon-pack="fas" icon-left="grin-stars">Interesting</b-button>
+                    <b-button tag="router-link" to="/reaction/interesting/" icon-pack="fas" icon-left="grin-stars">
+                        Interesting
+                    </b-button>
                 </b-navbar-item>
                 <b-navbar-item tag="div">
-                    <b-button tag="router-link" to="/reaction/unbelievable/" icon-pack="fas" icon-left="surprise">Unbelievable</b-button>
+                    <b-button tag="router-link" to="/reaction/unbelievable/" icon-pack="fas" icon-left="surprise">
+                        Unbelievable
+                    </b-button>
                 </b-navbar-item>
                 <b-navbar-item tag="div">
-                    <b-button tag="router-link" to="/reaction/fun/" icon-pack="fas" icon-left="laugh-beam">Fun</b-button>
+                    <b-button tag="router-link" to="/reaction/fun/" icon-pack="fas" icon-left="laugh-beam">Fun
+                    </b-button>
                 </b-navbar-item>
                 <b-navbar-item tag="div">
                     <b-button tag="router-link" to="/random/" icon-pack="fas" icon-left="random">Random</b-button>
                 </b-navbar-item>
                 <b-navbar-item tag="div">
-                    <b-button tag="router-link" to="/onthisday/" icon-pack="fas" icon-left="calendar">On This Day</b-button>
+                    <b-button tag="router-link" to="/onthisday/" icon-pack="fas" icon-left="calendar">On This Day
+                    </b-button>
                 </b-navbar-item>
             </template>
             <template slot="end">
@@ -57,23 +63,29 @@
                 </p>
             </div>
         </footer>
-        <b-modal :active.sync="isOpen" :can-cancel="false" has-modal-card>
+        <b-modal :active.sync="isOpen" has-modal-card>
             <div class="modal-card" style="width: 500px">
                 <section class="modal-card-body">
-                    <b-field label="Username">
-                        <b-input v-model="form.username" maxlength="30"/>
+                    <b-field>
+                        <b-checkbox-button v-model="logging" :native-value="true" type="is-success">
+                            <span>Login</span>
+                        </b-checkbox-button>
+
+                        <b-checkbox-button v-model="logging" :native-value="false" type="is-success">
+                            <span>Register</span>
+                        </b-checkbox-button>
+                    </b-field>
+                    <b-field label="Username" v-if="!logging">
+                        <b-input placeholder="Username" v-model="form.username" maxlength="30"/>
                     </b-field>
                     <b-field label="Email">
-                        <b-input v-model="form.email" maxlength="30"/>
+                        <b-input placeholder="Email" v-model="form.email" maxlength="30"/>
                     </b-field>
                     <b-field label="Password">
-                        <b-input v-model="form.password" type="password" maxlength="30"/>
+                        <b-input placeholder="Password" v-model="form.password" type="password" maxlength="30"/>
                     </b-field>
                     <b-field>
-                        <div class="buttons">
-                            <b-button @click="login">Đăng nhập</b-button>
-                            <b-button @click="register">Đăng ký</b-button>
-                        </div>
+                        <b-button @click="handle_click">Submit</b-button>
                     </b-field>
                 </section>
             </div>
@@ -89,6 +101,7 @@
                     results: [],
                     total: 0
                 },
+                logging: true,
                 isOpen: false,
                 form: {
                     email: null,
@@ -98,6 +111,9 @@
             }
         },
         methods: {
+            handle_click() {
+                this.logging ? this.login() : this.register()
+            },
             login() {
                 this.$auth
                     .loginWith('local', {
@@ -116,10 +132,5 @@
                 this.login()
             },
         },
-        async created() {
-            if (!this.$auth.loggedIn) {
-                this.isOpen = true
-            }
-        }
     }
 </script>
