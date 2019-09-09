@@ -1,7 +1,10 @@
 var router = require('express').Router();
 
 router.use('/users', require('./routeUser'));
-router.use('/scripts', require('./routeScript'));
-router.use('/campaigns', require('./routeCampaign'));
-router.use('/dataset', require('./routeData'));
+router.use('/facts', require('./routeFact'));
+router.use('/files', require('./routeFile'));
+router.use('/taxonomies', require('./routeTaxonomy'));
+router.use('/utilities', require('./routeUtility'));
+router.use('/home', require('./routeIndex'));
+
 module.exports = router;

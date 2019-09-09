@@ -34,7 +34,7 @@
         },
         data() {
             return {
-                date: this.value? new Date(this.value): new Date()
+                date: this.value ? new Date(this.value) : null
             }
         },
         watch: {

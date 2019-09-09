@@ -1,5 +1,5 @@
 $primary: #28b76c;
-
+$link: #28b76c;
 // Import only what you need from Bulma
 @import "../node_modules/bulma/sass/utilities/_all.sass";
 @import "../node_modules/bulma/sass/base/_all.sass";
@@ -35,6 +35,7 @@ $primary: #28b76c;
 .footer {
     background-color: #ffffff;
     padding: 3rem 1.5rem 3rem;
+    position: relative;
 }
 
 .main-page {
@@ -175,15 +176,6 @@ span + i {
     border-radius: 0;
 }
 
-.sidebar-bg {
-    position: absolute;
-    bottom: 0;
-    right: 50%;
-    left: 0;
-    top: 0;
-    background: #f5f5f5;
-}
-
 .menu-list a {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
@@ -250,7 +242,7 @@ span + i {
 
 .is-main {
     background: #FFF;
-    min-height: calc(100vh - 52px);
+    min-height: calc(100vh - 52px - 121px);
     border-left: 1px solid #ddd;;
     border-bottom: 1px solid #ddd;
     margin-left: -1px;
@@ -260,4 +252,205 @@ span + i {
     &:last-child {
         margin-bottom: 0;
     }
+}
+
+.logo {
+    font-size: 1.5em;
+    text-transform: lowercase;
+
+    .first {
+        font-size: 0.5em;
+        color: #868686;
+        font-weight: 100;
+    }
+
+    .second {
+        text-transform: uppercase;
+        color: #2bb24c;
+    }
+}
+
+.example {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ffdd57;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+    color: rgba(0, 0, 0, .7);
+
+    &:not(:last-child) {
+        margin-bottom: 1.5rem;
+    }
+
+    &:not(:first-child) {
+        margin-top: 2rem;
+    }
+
+    .button-left,
+    .button-right {
+        background: #ffdd57;
+        bottom: 100%;
+        display: inline-block;
+        font-size: 10px;
+        font-weight: 700;
+        position: absolute;
+        text-transform: uppercase;
+        vertical-align: top;
+        padding: 4px 8px;
+    }
+
+    .button-left {
+        border-radius: 4px 4px 0 0;
+        left: -1px;
+    }
+
+    .button-right {
+        display: inline-flex;
+        border-radius: 4px 4px 0 0;
+        right: -1px;
+    }
+
+    .example-component {
+        padding: 1.5rem;
+    }
+
+    .codeview {
+        border-top: 1px solid #ffdd57;
+    }
+}
+
+.abs-delete {
+    position: relative;
+
+    .delete {
+        opacity: 0;
+    }
+
+    &:hover {
+        .delete {
+            opacity: 1;
+        }
+    }
+}
+
+hr.is-mini {
+    margin: 0.5rem 0;
+}
+
+.button.nuxt-link-active {
+    background: $primary;
+    border: 0;
+    color: #FFF;
+    font-weight: bold;
+
+    &:focus,
+    &:active,
+    &:hover {
+        color: #EEEEEE;
+    }
+}
+
+@media screen and (min-width: 728px) {
+    .sidebar-bg {
+        position: absolute;
+        bottom: 0;
+        right: 50%;
+        left: 0;
+        top: 0;
+        background: #f5f5f5;
+    }
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    padding: 1rem 1rem;
+    background: #f5f5f5;
+
+    .sidebar-menu {
+        width: 100%;
+
+        .sidebar-label {
+            margin-bottom: .5em;
+            color: #7a7a7a;
+            font-size: .9em;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+        }
+
+        ul {
+            margin-bottom: 1.5em;
+            margin-top: 0;
+
+            li {
+                margin-bottom: .25em;
+                font-weight: 600;
+            }
+
+            .sidebar-menu-text {
+                flex: 1;
+            }
+        }
+    }
+}
+
+.image {
+    img {
+        width: 100%;
+    }
+}
+
+.card.abs {
+    position: relative;
+    height: 100%;
+
+    &:after {
+        z-index: 1;
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 49px;
+        background-image: linear-gradient(#00000094, #ffffff00);
+    }
+
+    .card-content {
+        z-index: 2;
+        position: absolute;
+        top: 10px;
+
+        a {
+            color: #FFF;
+        }
+    }
+
+    &.no-image {
+        height: 100%;
+
+        .card-image {
+            min-height: 250px;
+            height: calc(100% - 49px);
+            background: #f1f1a3;
+        }
+
+        &:after {
+            background-image: linear-gradient(#ffffff00, #ffffff00);
+        }
+
+        a {
+            color: #2d3031;
+        }
+    }
+}
+
+.card-footer-item {
+    cursor: pointer;
+}
+
+.box {
+    border-radius: 0;
 }

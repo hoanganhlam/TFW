@@ -1,37 +1,38 @@
 const {UserModel} = require('core-model');
 const {responseJSON, responseError} = require('./response');
-const {getBody, getParam} = require('./request');
-var passport = require('passport');
-
-exports.create = (req, res) => {
-    let data = getBody(req, ['password', 'email']);
-    return UserModel.findOne({email: data.email})
-        .then(user => {
-            if (user) {
-                return responseError(res, 'User has been existed', {messageCode: 'user_existed'}, 405);
-            } else {
-                let newUser = new UserModel()
-                newUser.email = data.email;
-                newUser.setPassword(data.password);
-                newUser.save()
-                console.log(newUser);
-            }
-        })
-        .then(created => {
-            return responseJSON(res, 'Create user successfully', created);
-        })
-        .catch(error => {
-            let message = error && error.message ? error.message : 'Error when create user';
-            return responseError(res, message, {messageCode: 'error_create_user'});
-        });
+const {getBody} = require('./request');
+const passport = require('passport');
+const escapeRegex = (string) => {
+    return string.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 };
 
-exports.list = async (req, res, next) => {
-    const pageSize = Number.parseInt(req.query.pageSize) || 9;
+
+exports.list = async (req, res) => {
+    const pageSize = Number.parseInt(req.query.pageSize) || 10;
+    const searchQuery = req.query.search || ''
     const page = req.query.page || 1;
+    const ordering = req.query.ordering || 'popular';
+    const regex = new RegExp(escapeRegex(searchQuery), 'gi');
+    let query = {$or: [{firstName: regex}, {lastName: regex}, {username: regex}]}
+    let aggregate = [
+        {
+            $lookup: {from: 'File', localField: 'avatar', foreignField: '_id', as: 'avatar'}
+        },
+        {
+            $match: query
+        },
+        {
+            $project: {'hash': 0, 'salt': 0, 'email': 0}
+        },
+    ]
+    if (ordering === 'newest') {
+        aggregate.push({$sort: {createdAt: -1}})
+    } else {
+        aggregate.push({$sort: {createdAt: 1}})
+    }
     try {
-        const results = await UserModel.find({})
-        const display = await UserModel.find({})
+        const results = await UserModel.aggregate(aggregate)
+        const display = await UserModel.aggregate(aggregate)
             .skip((pageSize * page) - pageSize)
             .limit(pageSize)
         res.json({
@@ -45,59 +46,60 @@ exports.list = async (req, res, next) => {
     }
 };
 
-exports.retrieve = (req, res) => {
-    let username = getParam(req, 'username');
-    return UserModel.findOne({username: username})
+exports.create = (req, res) => {
+    let data = getBody(req, ['bio', 'username', 'password', 'firstName', 'lastName', 'email', 'avatar']);
+    return UserModel.findOne({email: data.email})
         .then(user => {
-            if (!user) return responseError(res, 'User has not been existed', {messageCode: 'user_not_existed'}, 404);
-            else return responseJSON(res, 'Get user successfully', user);
+            if (user) {
+                return responseError(res, 'User has been existed', {messageCode: 'user_existed'}, 405);
+            } else {
+                let newUser = new UserModel()
+                newUser.username = data.username;
+                newUser.email = data.email;
+                newUser.setPassword(data.password);
+                newUser.save()
+            }
+        })
+        .then(created => {
+            return responseJSON(res, 'Create user successfully', created);
         })
         .catch(error => {
-            let message = error && error.message ? error.message : 'Error when get user';
-            return responseError(res, message, {messageCode: 'error_get_user'});
+            let message = error && error.message ? error.message : 'Error when create user';
+            return responseError(res, message, {messageCode: 'error_create_user'});
         });
+};
+
+exports.retrieve = (req, res) => {
+    return res.json(req.instance)
 };
 
 exports.update = (req, res) => {
-    let username = getParam(req, 'username');
-    let name = getBody(req, 'name');
-    return UserModel.findOne({username: username})
-        .then(user => {
-            if (!user) return responseError(res, 'User has not been existed', {messageCode: 'user_not_existed'}, 404);
-            else return user.update({name: name});
-        })
-        .then(updated => {
-            return responseJSON(res, 'Update user successfully', updated);
-        })
-        .catch(error => {
-            let message = error && error.message ? error.message : 'Error when get users';
-            return responseError(res, message, {messageCode: 'error_get_user'});
-        });
+    let data = getBody(req, ['firstName', 'lastName', 'avatar', 'bio']);
+    for (let field of Object.keys(data)) {
+        if (typeof data[field] !== 'undefined') {
+            req.instance[field] = data[field];
+        }
+    }
+    req.instance.save().then(function (instance) {
+        return res.json(instance);
+    }).catch(error => {
+        let message = error && error.message ? error.message : 'Error';
+        return responseError(res, message, {messageCode: 'error_get_all_user'});
+    });
 };
 
 exports.delete = (req, res) => {
-    let username = getParam(req, 'username');
-    return UserModel.findOne({username: username})
-        .then(user => {
-            if (!user) return responseError(res, 'User has not been existed', {messageCode: 'user_not_existed'}, 404);
-            else return user.remove();
-        })
-        .then(updated => {
-            return responseJSON(res, 'Update user successfully', updated);
-        })
-        .catch(error => {
-            let message = error && error.message ? error.message : 'Error when get users';
-            return responseError(res, message, {messageCode: 'error_get_user'});
-        });
+    return req.instance.remove().then(function () {
+        return res.sendStatus(204);
+    });
 };
 
-exports.me = (req, res, next) => {
-    UserModel.findById(req.payload.id).then(function (user) {
-        if (!user) {
-            return res.sendStatus(401);
-        }
-        return res.json(user);
-    }).catch(next);
+exports.me = async (req, res, next) => {
+    let user = await UserModel.findById(req.payload.id).populate({path: 'avatar', model: 'File'})
+    if (!user) {
+        return res.sendStatus(401);
+    }
+    return res.json(user);
 };
 
 exports.login = (req, res, next) => {
@@ -120,4 +122,265 @@ exports.login = (req, res, next) => {
             return res.status(422).json(info);
         }
     })(req, res, next);
+}
+
+
+exports.fakerr = async (req, res, next) => {
+    let firstName = [
+        'Adam',
+        'Adrian',
+        'Alan',
+        'Alexander',
+        'Andrew',
+        'Anthony',
+        'Austin',
+        'Benjamin',
+        'Blake',
+        'Boris',
+        'Brandon',
+        'Brian',
+        'Cameron',
+        'Carl',
+        'Charles',
+        'Christian',
+        'Christopher',
+        'Colin',
+        'Connor',
+        'Dan',
+        'David',
+        'Dominic',
+        'Dylan',
+        'Edward',
+        'Eric',
+        'Evan',
+        'Frank',
+        'Gavin',
+        'Gordon',
+        'Harry',
+        'Ian',
+        'Isaac',
+        'Jack',
+        'Jacob',
+        'Jake',
+        'James',
+        'Jason',
+        'Joe',
+        'John',
+        'Jonathan',
+        'Joseph',
+        'Joshua',
+        'Julian',
+        'Justin',
+        'Keith',
+        'Kevin',
+        'Leonard',
+        'Liam',
+        'Lucas',
+        'Luke',
+        'Matt',
+        'Max',
+        'Michael',
+        'Nathan',
+        'Neil',
+        'Nicholas',
+        'Oliver',
+        'Owen',
+        'Paul',
+        'Peter',
+        'Phil',
+        'Piers',
+        'Richard',
+        'Robert',
+        'Ryan',
+        'Sam',
+        'Sean',
+        'Sebastian',
+        'Simon',
+        'Stephen',
+        'Steven',
+        'Stewart',
+        'Thomas',
+        'Tim',
+        'Trevor',
+        'Victor',
+        'Warren',
+        'William'
+    ]
+    let lastName = [
+        'Abraham',
+        'Allan',
+        'Alsop',
+        'Anderson',
+        'Arnold',
+        'Avery',
+        'Bailey',
+        'Baker',
+        'Ball',
+        'Bell',
+        'Berry',
+        'Black',
+        'Blake',
+        'Bond',
+        'Bower',
+        'Brown',
+        'Buckland',
+        'Burgess',
+        'Butler',
+        'Cameron',
+        'Campbell',
+        'Carr',
+        'Chapman',
+        'Churchill',
+        'Clark',
+        'Clarkson',
+        'Coleman',
+        'Cornish',
+        'Davidson',
+        'Davies',
+        'Dickens',
+        'Dowd',
+        'Duncan',
+        'Dyer',
+        'Edmunds',
+        'Ellison',
+        'Ferguson',
+        'Fisher',
+        'Forsyth',
+        'Fraser',
+        'Gibson',
+        'Gill',
+        'Glover',
+        'Graham',
+        'Grant',
+        'Gray',
+        'Greene',
+        'Hamilton',
+        'Hardacre',
+        'Harris',
+        'Hart',
+        'Hemmings',
+        'Henderson',
+        'Hill',
+        'Hodges',
+        'Howard',
+        'Hudson',
+        'Hughes',
+        'Hunter',
+        'Ince',
+        'Jackson',
+        'James',
+        'Johnston',
+        'Jones',
+        'Kelly',
+        'Kerr',
+        'King',
+        'Knox',
+        'Lambert',
+        'Langdon',
+        'Lawrence',
+        'Lee',
+        'Lewis',
+        'Lyman',
+        'MacDonald',
+        'Mackay',
+        'Mackenzie',
+        'MacLeod',
+        'Manning',
+        'Marshall',
+        'Martin',
+        'Mathis',
+        'May',
+        'McDonald',
+        'McLean',
+        'McGrath',
+        'Metcalfe',
+        'Miller',
+        'Mills',
+        'Mitchell',
+        'Morgan',
+        'Morrison',
+        'Murray',
+        'Nash',
+        'Newman',
+        'Nolan',
+        'North',
+        'Ogden',
+        'Oliver',
+        'Paige',
+        'Parr',
+        'Parsons',
+        'Paterson',
+        'Payne',
+        'Peake',
+        'Peters',
+        'Piper',
+        'Poole',
+        'Powell',
+        'Pullman',
+        'Quinn',
+        'Rampling',
+        'Randall',
+        'Rees',
+        'Reid',
+        'Roberts',
+        'Robertson',
+        'Ross',
+        'Russell',
+        'Rutherford',
+        'Sanderson',
+        'Scott',
+        'Sharp',
+        'Short',
+        'Simpson',
+        'Skinner',
+        'Slater',
+        'Smith',
+        'Springer',
+        'Stewart',
+        'Sutherland',
+        'Taylor',
+        'Terry',
+        'Thomson',
+        'Tucker',
+        'Turner',
+        'Underwood',
+        'Vance',
+        'Vaughan',
+        'Walker',
+        'Wallace',
+        'Walsh',
+        'Watson',
+        'Welch',
+        'White',
+        'Wilkins',
+        'Wilson',
+        'Wright',
+        'Young'
+    ]
+    let users = []
+    firstName.forEach(x => {
+        lastName.forEach(y => {
+            users.push({
+                firstName: x,
+                lastName: y,
+                username: (x + y).toLowerCase(),
+                password: 'Hoanganhlam@no99',
+                isFiend: true,
+                email: (x + y).toLowerCase() + '@yahoo.com'
+            })
+        })
+    })
+    for (let i = 0; i < 1000; i++) {
+        let check = await UserModel.findOne({username: users[i].username})
+        if (!check) {
+            let newUser = new UserModel()
+            newUser.username = users[i].username;
+            newUser.firstName = users[i].firstName;
+            newUser.lastName = users[i].lastName;
+            newUser.email = users[i].email;
+            newUser.setPassword(users[i].password);
+            newUser.save()
+        }
+    }
+    return res.json({msg: "OK"})
 }

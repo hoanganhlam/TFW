@@ -1,8 +1,12 @@
-import JobRepository from './job'
+import FactRepository from './fact'
+import UserRepository from './user'
+import TaxonomyRepository from './taxonomy'
 
 export default function (app, inject) {
     const api = {
-        JOB: JobRepository(app),
+        fact: FactRepository(app),
+        user: UserRepository(app),
+        taxonomy: TaxonomyRepository(app)
     }
     inject('api', api)
 }

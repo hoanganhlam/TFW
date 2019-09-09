@@ -3,8 +3,8 @@ module.exports = {
     env: {
         WS_URL: process.env.WS_URL || 'http://127.0.0.1:3001'
     },
+    mode: 'universal',
 
-    mode: 'spa',
     /*
     ** Headers of the page
     */
@@ -22,7 +22,7 @@ module.exports = {
     /*
     ** Customize the progress-bar color
     */
-    loading: {color: '#fff'},
+    loading: {color: '#28b76c'},
     /*
     ** Global CSS
     */
@@ -35,7 +35,8 @@ module.exports = {
     ** Plugins to load before mounting the App
     */
     plugins: [
-        {src: '@/plugins/components.js', ssr: false},
+        {src: '@/plugins/components.js', ssr: true},
+        {src: '@/plugins/m_components.js', ssr: false},
         '@/plugins/mixins',
         '@/plugins/repository',
         '@/plugins/schema',

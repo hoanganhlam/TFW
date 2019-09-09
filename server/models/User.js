@@ -13,6 +13,13 @@ const Schema = mongoose.Schema;
 const collection = 'User';
 
 const UserSchema = new Schema({
+    username: {
+        type: String,
+        lowercase: true,
+        unique: true,
+        required: [true, "can't be blank"],
+        match: [/^[a-zA-Z0-9]+$/, 'is invalid'],
+    },
     email: {
         type: String,
         lowercase: true,
@@ -21,7 +28,14 @@ const UserSchema = new Schema({
     },
     hash: String,
     salt: String,
-    name: String
+    firstName: String,
+    lastName: String,
+    avatar: {type: mongoose.Schema.Types.ObjectId, ref: 'File'},
+    bio: String,
+    isFiend: {
+        type: Boolean,
+        default: false
+    }
 }, {
     versionKey: false,
     collection: collection,
@@ -59,8 +73,63 @@ UserSchema.methods.toAuthJSON = function () {
         email: this.email,
         token: this.generateJWT(),
         bio: this.bio,
-        image: this.image
+        avatar: this.avatar
     };
+};
+
+UserSchema.index({
+    username: 1
+}, {
+    background: true,
+    name: 'idx_users_by_username'
+});
+
+UserSchema.methods.toAuthJSONFor = function () {
+    return {
+        _id: this._id,
+        username: this.username,
+        email: this.email,
+        bio: this.bio,
+        firstName: this.firstName,
+        lastName: this.lastName,
+        avatar: this.avatar
+    };
+};
+
+UserSchema.methods.vote = function (fact, value) {
+    if (value) {
+        let _this = this
+        let voted = fact.votes.filter(vote => {
+            return vote.user.toString() === _this._id.toString()
+        })
+        if (voted.length) {
+            voted[0].value = value
+        } else {
+            fact.votes.push({
+                user: this._id,
+                value: value
+            });
+        }
+    } else {
+        fact.votes = fact.votes.filter(vote => vote.user.toString() !== this._id.toString())
+    }
+    return fact.save();
+};
+
+UserSchema.methods.isVoted = function (fact) {
+    let _this = this
+    let voted = fact.votes.filter(vote => {
+        return vote.user.toString() === _this._id.toString()
+    })
+    return voted.length ? voted[0] : false;
+};
+
+UserSchema.methods.random = async function () {
+    return this.count(function(err, count) {
+        if (err) return cb(err);
+        let rand = Math.floor(Math.random() * count);
+        this.findOne().skip(rand);
+    }.bind(this));
 };
 
 module.exports = mongoose.model(collection, UserSchema);

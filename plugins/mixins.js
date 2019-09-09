@@ -1,9 +1,10 @@
 import Vue from 'vue'
 import moment from "moment";
-
 Vue.mixin({
     data() {
         return {
+            domain: process.env.domain,
+            api_domain: process.env.apiDomain,
             moment: moment
         }
     },
@@ -39,38 +40,16 @@ Vue.mixin({
             return string.charAt(0).toUpperCase() + string.slice(1);
         },
         convertName(user) {
-            if (user.first_name || user.last_name) {
-                return user.first_name + ' ' + user.last_name
+            if (user.firstName || user.lastName) {
+                return user.firstName + ' ' + user.lastName
             }
             return user.username
         },
         formatDate(dateStr) {
-            return moment(dateStr).format('YYYY-MM-DD | h:mm A')
+            return new moment(dateStr, 'YYYY-MM-DD').format('YYYY-MM-DD')
         },
-        slugify(text) {
-            return text ? text.toString().toLowerCase()
-                .replace(/\s+/g, '-')           // Replace spaces with -
-                .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
-                .replace(/\-\-+/g, '-')         // Replace multiple - with single -
-                .replace(/^-+/, '')             // Trim - from start of text
-                .replace(/-+$/, '') : null            // Trim - from end of text
-        },
-        uniqueID() {
-            function chr4() {
-                return Math.random().toString(16).slice(-4);
-            }
-
-            return chr4() + chr4() +
-                '_' + chr4() +
-                '_' + chr4() +
-                '_' + chr4();
-        },
-        async crawl(flag, id, campaign_id) {
-            return await this.$axios.$post('/run/', {
-                id: id,
-                campaign_id: campaign_id,
-                isTest: flag
-            })
-        },
+        async getDescription(text) {
+            return await this.$axios.$get(`/utilities/description?search=${text}&limit=3&lang=en`)
+        }
     }
 })

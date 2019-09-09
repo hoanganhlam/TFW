@@ -5,7 +5,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 
 let db = {};
-let dbURI = 'mongodb+srv://lam:Hoanganhlam@no99@datacenter-6mq95.mongodb.net/test?retryWrites=true&w=majority';
+let dbURI = `mongodb://${process.env.DB_USER}:${process.env.DB_PWD}@${process.env.DB_HOST}:${process.env.DB_PORT}/fact`;
 
 mongoose.connect(dbURI, {useNewUrlParser: true});
 
