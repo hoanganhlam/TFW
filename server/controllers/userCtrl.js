@@ -95,7 +95,7 @@ exports.delete = (req, res) => {
 };
 
 exports.me = async (req, res, next) => {
-    let user = await UserModel.findById(req.payload.id).populate({path: 'avatar', model: 'File'})
+    let user = await UserModel.findById(req.payload.id).populate({path: 'avatar', model: 'File'}).catch(next)
     if (!user) {
         return res.sendStatus(401);
     }
