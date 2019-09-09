@@ -7,7 +7,7 @@
             <div style="width: 100%">
                 <c-fact class="bt_32" :fact="fact"></c-fact>
                 <div class="comments">
-                    <div class="content">
+                    <div class="content" v-if="$auth.loggedIn">
                         <textarea v-model="comment" style="margin-bottom: 0.5rem" class="textarea" rows="2" placeholder="Your idea...">
                         </textarea>
                         <div class="level">
