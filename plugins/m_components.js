@@ -5,8 +5,8 @@ import DField from '../components/DisplayField'
 import GDate from '../components/Datetime'
 import GArray from '../components/Array'
 import GTag from '../components/GenericTag'
-import GMBrowser from '../components/Media/Browser'
-import GMUpload from '../components/Media/Upload'
+import GMBrowser from '../components/media/Browser'
+import GMUpload from '../components/media/Upload'
 import GenericObject from '../components/GenericObject'
 
 
