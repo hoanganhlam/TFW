@@ -22,6 +22,7 @@
         <b-input :placeholder="setting.label" v-else-if="setting.type ==='text'" v-model="data"></b-input>
         <b-input :placeholder="setting.label" v-else-if="setting.type ==='number'" type="number" v-model="data"></b-input>
         <gm-browser :placeholder="setting.label" v-else-if="setting.type ==='gallery'" v-model="data"></gm-browser>
+        <gm-upload :multiple="false" :placeholder="setting.label" v-else-if="setting.type ==='photo'" v-model="data"></gm-upload>
         <g-object :placeholder="setting.label" v-else-if="setting.type ==='object'" v-model="data"></g-object>
         <b-taginput
             v-else-if="setting.type ==='hashtag'"

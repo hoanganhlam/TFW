@@ -92,6 +92,17 @@
                 this.results = []
                 this.count = res.total
                 this.results = res.results
+                this.results.forEach(item => {
+                    if (item.taxonomies && item.taxonomies.length) {
+                        let textTaxonomies = []
+                        item.taxonomies.forEach(tag => {
+                            if (tag) {
+                                textTaxonomies.push(tag.title)
+                            }
+                        })
+                        item.textTaxonomies = textTaxonomies
+                    }
+                })
                 this.isLoading = false
             },
             onPageChange(page) {

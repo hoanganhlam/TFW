@@ -101,14 +101,14 @@ function extract(result, dates, title) {
         }
         let user = await UserModel.find({username: 'lam'});
         let taxonomy = null
-        let taxonomies = await TaxonomyModel.countDocuments({'slug': slug(tag)})
-        if (taxonomies) {
-            taxonomy = taxonomies[0]
+        let taxonomies = await TaxonomyModel.find({'title': tag})
+        if (taxonomies.length) {
+            taxonomy = taxonomies[0]._id
         } else {
-            taxonomy = await TaxonomyModel.create({
+            let new_tag = await TaxonomyModel.create({
                 title: tag,
-                slug: slug(tag)
             })
+            taxonomy = new_tag._id
         }
         if (date.isValid()) {
             let test = await FactModel.countDocuments({contentShort: contentShort})

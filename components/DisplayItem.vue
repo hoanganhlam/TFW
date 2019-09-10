@@ -5,13 +5,12 @@
                 <d-field :title="title" :setting="column" v-model="data[column.field]"></d-field>
             </b-field>
         </div>
-        <div class="level">
-            <div class="level-left"></div>
-            <div class="level-right">
-                <div class="buttons">
-                    <b-button @click="handleDelete">{{sure?'Sure':'Delete'}}</b-button>
-                    <b-button @click="handleSave">Save</b-button>
-                </div>
+        <div class="columns">
+            <div class="column">
+                <b-button class="is-fullwidth" @click="handleDelete">{{sure?'Sure':'Delete'}}</b-button>
+            </div>
+            <div class="column">
+                <b-button class="is-fullwidth" @click="handleSave">Save</b-button>
             </div>
         </div>
     </div>

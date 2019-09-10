@@ -1,7 +1,10 @@
 <template>
     <section>
+        <figure class="image" v-if="value">
+            <img :alt="value.title" :src="'/' + value.path">
+        </figure>
         <b-field>
-            <b-upload v-model="dropFiles" multiple drag-drop>
+            <b-upload v-model="dropFiles" :multiple="multiple" drag-drop>
                 <section class="section">
                     <div class="content has-text-centered">
                         <p>
@@ -12,19 +15,20 @@
                 </section>
             </b-upload>
         </b-field>
-        <div class="tags">
-            <span v-for="(file, index) in dropFiles"
-                  :key="index"
-                  class="tag is-primary">
+        <div class="tags" v-if="multiple">
+            <span v-for="(file, index) in dropFiles" :key="index" class="tag is-primary">
                 {{file.name}}
-                <button class="delete is-small"
-                        type="button"
-                        @click="deleteDropFile(index)">
-                </button>
+                <button class="delete is-small" type="button" @click="deleteDropFile(index)"></button>
+            </span>
+        </div>
+        <div class="tags" v-else>
+            <span v-if="dropFiles" class="tag is-primary">
+                {{dropFiles.name}}
+                <button class="delete is-small" type="button" @click="dropFiles = null"></button>
             </span>
         </div>
         <div>
-            <b-button @click="handleUpload">Upload</b-button>
+            <b-button class="is-fullwidth" @click="handleUpload">Upload</b-button>
         </div>
     </section>
 </template>
@@ -32,9 +36,16 @@
 <script>
     export default {
         name: 'Upload',
+        props: {
+            value: {},
+            multiple: {
+                type: Boolean,
+                default: true
+            }
+        },
         data() {
             return {
-                dropFiles: []
+                dropFiles: this.multiple ? [] : null
             }
         },
         methods: {
@@ -43,18 +54,22 @@
             },
 
             async handleUpload() {
-                for (let i = 0; i < this.dropFiles.length; i++) {
-                    await this.upload(this.dropFiles[i])
+                let results = this.multiple ? [] : null
+                if (this.multiple) {
+                    for (let i = 0; i < this.dropFiles.length; i++) {
+                        results.push(await this.upload(this.dropFiles[i]))
+                    }
+                } else if (this.dropFiles) {
+                    results = await this.upload(this.dropFiles)
                 }
-                this.$emit('done')
+                this.dropFiles = this.multiple ? [] : null
+                this.$emit('input', results)
             },
             async upload(file) {
-                this.loading = true
                 let formData = new FormData()
-                formData.append('title', file.name)
-                formData.append('path', file)
-                await this.$axios.post('/media/media/', formData)
-                this.loading = false
+                formData.append('file', file)
+                return await this.$axios.$post('/files/', formData)
+
             },
         }
     }

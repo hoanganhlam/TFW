@@ -4,7 +4,7 @@ const baseFields = ['createdAt', 'updatedAt']
 
 
 const SCHEMA = {
-    'facts': baseFields.concat(['contentShort', 'taxonomies', 'date', 'contentLong', 'search']),
+    'facts': baseFields.concat(['contentShort', 'textTaxonomies', 'date', 'contentLong', 'search', 'photo']),
     'taxonomies': baseFields.concat(['title', 'description', 'slug', 'isObject', 'kind', 'search'])
 }
 
@@ -53,9 +53,9 @@ const fields = [
         update: true
     },
     {
-        field: 'taxonomies',
+        field: 'textTaxonomies',
         label: 'Thẻ',
-        type: 'tag',
+        type: 'hashtag',
         show: false,
         update: true,
         source: '/taxonomies/',
@@ -89,6 +89,13 @@ const fields = [
         show: false,
         update: true
     },
+    {
+        field: 'photo',
+        label: 'Hình ảnh',
+        type: 'photo',
+        show: false,
+        update: true
+    }
 ]
 
 Vue.mixin({

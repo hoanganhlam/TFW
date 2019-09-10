@@ -20,7 +20,10 @@ module.exports = {
         ],
         link: [
             {rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'},
-            {rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Open+Sans:400,700|Space+Mono:400,700&display=swap&subset=vietnamese'}
+            {
+                rel: 'stylesheet',
+                href: 'https://fonts.googleapis.com/css?family=Open+Sans:400,700|Space+Mono:400,700&display=swap&subset=vietnamese'
+            }
         ]
     },
     /*
@@ -54,6 +57,9 @@ module.exports = {
         // Doc: https://axios.nuxtjs.org/usage
         '@nuxtjs/axios',
         '@nuxtjs/auth',
+        ['@nuxtjs/google-analytics', {
+            id: 'UA-147540125-1'
+        }]
     ],
     /*
     ** Axios module configuration

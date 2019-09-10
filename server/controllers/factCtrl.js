@@ -15,33 +15,27 @@ exports.create = async (req, res, next) => {
         return res.sendStatus(401);
     }
     let data = getBody(req, [
-        'title', 'contentLong', 'taxSlugs', 'photo', 'taxTexts',
-        'contentShort', 'source', 'taxonomies', 'date', 'createdAt']);
+        'title', 'contentLong', 'photo', 'textTaxonomies',
+        'contentShort', 'source', 'date', 'createdAt']);
     try {
         let instance = await FactModel.findOne({contentShort: data.contentShort}).catch(next);
         if (!instance) {
             instance = new FactModel(data)
         }
 
-        if (data.taxTexts && data.taxTexts.length) {
-            let taxonomies = []
-            for (let i = 0; i < data.taxTexts.length; i++) {
-                let taxonomy = await TaxonomyModel.findOne({'slug': slug(data.taxTexts[i])})
-                if (!taxonomy) {
-                    taxonomy = await TaxonomyModel.create({
-                        title: data.taxTexts[i],
-                        slug: slug(data.taxTexts[i])
-                    })
+        let taxonomies = []
+        if (data['textTaxonomies'] && data['textTaxonomies'].length) {
+            for (let i = 0; i < data['textTaxonomies'].length; i++) {
+                let check = await TaxonomyModel.find({title: data['textTaxonomies'][i]})
+                if (check.length) {
+                    taxonomies.push(check[0]._id)
+                } else {
+                    let tag = await TaxonomyModel.create({title: data['textTaxonomies'][i]})
+                    taxonomies.push(tag._id)
                 }
-                taxonomies.push(taxonomy._id)
             }
-            instance.taxonomies = taxonomies
-        } else if (data.taxSlugs && data.taxSlugs.length) {
-            let taxonomies = await TaxonomyModel.find({'slug': {$in: data.taxSlugs}})
-            instance.taxonomies = instance.taxonomies.concat(taxonomies.map(x => x._id))
-        } else if (data.taxonomies.length) {
-            instance.taxonomies = data.taxonomies
         }
+        instance.taxonomies = taxonomies
 
         if (user.email === 'lam@trip.vn') {
             let count = await UserModel.count()
@@ -106,6 +100,7 @@ exports.list = async (req, res, next) => {
     const display = await FactModel.find(query)
         .populate('user')
         .populate('photo')
+        .populate('taxonomies')
         .sort({point: -1})
         .skip(pageSize * (page - 1))
         .limit(pageSize)
@@ -134,8 +129,8 @@ exports.vote = async (req, res, next) => {
     return res.json(user.isVoted(req.instance))
 };
 
-exports.update = (req, res) => {
-    let data = getBody(req, ['title', 'contentLong', 'contentShort', 'date', 'photo', 'source', 'taxonomies']);
+exports.update = async (req, res) => {
+    let data = getBody(req, ['title', 'contentLong', 'contentShort', 'date', 'photo', 'source', 'textTaxonomies']);
     for (let field of Object.keys(data)) {
         if (typeof data[field] !== 'undefined') {
             if (field === 'source') {
@@ -149,6 +144,19 @@ exports.update = (req, res) => {
             }
         }
     }
+    let taxonomies = []
+    if (data['textTaxonomies'] && data['textTaxonomies'].length) {
+        for (let i = 0; i < data['textTaxonomies'].length; i++) {
+            let check = await TaxonomyModel.find({title: data['textTaxonomies'][i]})
+            if (check.length) {
+                taxonomies.push(check[0]._id)
+            } else {
+                let tag = await TaxonomyModel.create({title: data['textTaxonomies'][i]})
+                taxonomies.push(tag._id)
+            }
+        }
+    }
+    req.instance.taxonomies = taxonomies
     req.instance.save().then(function (instance) {
         return res.json(instance);
     }).catch(error => {
