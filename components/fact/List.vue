@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="columns is-multiline is-mobile">
+        <div class="columns is-multiline">
             <div class="column is-6" v-for="fact in res.results" :key="fact._id">
                 <c-fact class="bt_16" :fact="fact" :cover="true"></c-fact>
             </div>
