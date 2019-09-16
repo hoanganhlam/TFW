@@ -1,31 +1,29 @@
 <template>
-    <aside class="sidebar">
-        <div class="sidebar-menu">
-            <h4 class="sidebar-label">{{label}}</h4>
-            <div class="columns is-mobile is-multiline">
-                <div v-for="topic in res.results" :key="topic._id"
-                     v-if="topic && ((type==='object' && topic.isObject) || (type==='tag' && !topic.isObject))"
-                     class="column is-half-mobile is-one-desktop">
-                    <div class="box">
-                        <div class="media">
-                            <div class="media-left">
-                                <figure v-if="type === 'object'" class="image is-48x48">
-                                    <img v-if="topic.tempPhotos && topic.tempPhotos.length" :alt="topic.title"
-                                         :src="'/' + topic.tempPhotos[0].size['100_100']">
-                                    <img alt="Empty Avatar" v-else
-                                         src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png">
-                                </figure>
-                                <b-icon v-else pack="fa" icon="tags"></b-icon>
-                            </div>
-                            <div class="media-content">
-                                <n-link :to="'/topic/' + topic.slug">{{topic.title}}</n-link>
-                            </div>
+
+    <div class="sidebar-menu">
+        <h4 class="sidebar-label">{{label}}</h4>
+        <div class="columns is-mobile is-multiline">
+            <div v-for="topic in res.results" :key="topic._id" class="column is-half-mobile is-one-desktop"
+                 v-if="topic">
+                <div class="box">
+                    <div class="media">
+                        <div class="media-left">
+                            <figure v-if="topic.isObject" class="image is-48x48">
+                                <img v-if="topic.tempPhotos && topic.tempPhotos.length" :alt="topic.title"
+                                     :src="'/' + topic.tempPhotos[0].size['100_100']">
+                                <img alt="Empty Avatar" v-else
+                                     src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png">
+                            </figure>
+                            <b-icon v-else pack="fa" icon="tags"></b-icon>
+                        </div>
+                        <div class="media-content">
+                            <n-link :to="'/topic/' + topic.slug">{{topic.title}}</n-link>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </aside>
+    </div>
 </template>
 
 <script>

@@ -23,7 +23,7 @@ async function popular(user) {
 async function this_day(user, query) {
     let total
     let display
-    if (query['time.month'] && query['time.day']) {
+    if (query['number.month'] && query['number.day']) {
         total = await FactModel.countDocuments(query)
         display = await FactModel.find(query)
             .populate({
@@ -52,9 +52,10 @@ async function recent(user, page, pageSize) {
     const display = await FactModel.find({})
         .populate('user')
         .populate('photo')
+        .populate('taxonomies')
+        .sort({createdAt: -1})
         .skip(pageSize * (page - 1))
         .limit(pageSize)
-        .sort({createdAt: -1})
         .catch(err => {
             console.log(err);
         })
@@ -70,7 +71,25 @@ async function taxonomies() {
     const results_count = await TaxonomyModel.countDocuments(query)
     const display = await TaxonomyModel.find(query)
         .populate({path: 'facts', populate: {path: 'photo', model: 'File'}})
-        .limit(6)
+        .limit(5)
+        .catch(err => {
+            console.log(err);
+        })
+    return {
+        results: display.map(x => x.toJsonFor()),
+        currentPage: 1,
+        total: results_count
+    }
+}
+
+async function hashtag() {
+    let query = {
+        isObject: false
+    }
+    const results_count = await TaxonomyModel.countDocuments(query)
+    const display = await TaxonomyModel.find(query)
+        .populate({path: 'facts', populate: {path: 'photo', model: 'File'}})
+        .limit(5)
         .catch(err => {
             console.log(err);
         })
@@ -102,38 +121,32 @@ router.get('/', auth.optional, async (req, res, next) => {
     const pageSize = Number.parseInt(req.query.page_size) || 10
     let query = {}
     if (req.query.day) {
-        query['time.day'] = req.query.day.length === 1 ? "0" + req.query.day : req.query.day
+        query['number.day'] = req.query.day.length === 1 ? "0" + req.query.day : req.query.day
     }
 
     if (req.query.month) {
-        query['time.month'] = req.query.month.length === 1 ? "0" + req.query.month : req.query.month
+        query['number.month'] = req.query.month.length === 1 ? "0" + req.query.month : req.query.month
     }
 
     if (req.query.year) {
-        query['time.year'] = req.query.year
+        query['number.year'] = req.query.year
     }
 
     let user = await UserModel.findById(req.payload ? req.payload.id : null).catch(next);
     let n = await recent(user, page, pageSize)
     let p = await popular(user)
     let t = await taxonomies()
+    let h = await hashtag()
     let d = await this_day(user, query)
     let r = await random()
 
     return res.json({
-        n, p, t, d, r: r ? r.toJSONFor(user) : null
+        n, p, t, d, r: r ? r.toJSONFor(user) : null, h
     })
 });
 
 router.post('/', auth.required, (req, res, next) => {
 
 });
-
-// router.get('/reset', (req, res, next) => {
-//     var mongoose = require('mongoose');
-//     /* Connect to the DB */
-//     mongoose.connection.db.dropDatabase();
-//     return res.json({stt: 'done'})
-// });
 
 module.exports = router;

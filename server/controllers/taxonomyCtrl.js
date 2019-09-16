@@ -34,22 +34,23 @@ exports.list = async (req, res, next) => {
 
     try {
         const searchQuery = req.query.search
-        const kind = req.query.kind
-        const relatedWith = req.query.relatedWith
         if (searchQuery) {
             query['title'] = new RegExp(escapeRegex(searchQuery), 'gi');
         }
-        if (kind) {
-            query['kind'] = kind
+        if (req.query.kind) {
+            query['kind'] = {$all: req.query.kind.split(',')}
         }
-        if (relatedWith) {
+        if (typeof req.query['is_object'] !== 'undefined') {
+            query['isObject'] = req.query['is_object']
+        }
+        if (req.query.relatedWith) {
 
         }
         const results = await TaxonomyModel.find(query)
             .populate({path: 'facts', populate: {path: 'photo', model: 'File'}})
             .skip((pageSize * page) - pageSize)
             .limit(pageSize);
-        const total = await TaxonomyModel.countDocuments();
+        const total = await TaxonomyModel.countDocuments(query);
         res.json({
             results: results.map(x => x.toJsonFor()),
             currentPage: page,

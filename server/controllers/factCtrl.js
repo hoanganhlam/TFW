@@ -3,11 +3,10 @@ const {responseError} = require('./response');
 const {getBody} = require('./request');
 const mongoose = require('mongoose')
 const ObjectId = mongoose.Types.ObjectId;
-const slug = require('slug');
-
 const escapeRegex = (string) => {
     return string.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 };
+
 
 exports.create = async (req, res, next) => {
     let user = await UserModel.findById(req.payload.id).catch(next);
@@ -16,7 +15,7 @@ exports.create = async (req, res, next) => {
     }
     let data = getBody(req, [
         'title', 'contentLong', 'photo', 'textTaxonomies',
-        'contentShort', 'source', 'date', 'createdAt']);
+        'contentShort', 'source', 'number', 'createdAt']);
     try {
         let instance = await FactModel.findOne({contentShort: data.contentShort}).catch(next);
         if (!instance) {
@@ -59,24 +58,56 @@ exports.create = async (req, res, next) => {
 
 exports.list = async (req, res, next) => {
     let user = await UserModel.findById(req.payload ? req.payload.id : null).catch(next);
-    const pageSize = Number.parseInt(req.query.pageSize) || 10;
+    let sort = {point: -1}
+    const pageSize = Number.parseInt(req.query.page_size) || 10;
     const page = req.query.page || 1;
-
     const searchQuery = req.query.search || ''
     const regex = new RegExp(escapeRegex(searchQuery), 'gi');
 
     let query = {$or: [{title: regex}, {contentLong: regex}, {contentShort: regex}]}
 
+    if (req.query.ordering === 'newest') {
+        sort =  {createdAt: -1}
+    }
+
     if (req.query.day) {
-        query['time.day'] = req.query.day.length === 1 ? "0" + req.query.day : req.query.day
+        query['number.day'] = req.query.day.length === 1 ? "0" + req.query.day : req.query.day
     }
 
     if (req.query.month) {
-        query['time.month'] = req.query.month.length === 1 ? "0" + req.query.month : req.query.month
+        query['number.month'] = req.query.month.length === 1 ? "0" + req.query.month : req.query.month
     }
 
     if (req.query.year) {
-        query['time.year'] = req.query.year
+        query['number.year'] = req.query.year
+    }
+
+    if (req.query.trivia) {
+        query['number.trivia'] = req.query.trivia
+    }
+
+    if (req.query.math) {
+        query['number.math'] = req.query.math
+    }
+
+    if (req.query.number) {
+        query[$or].concat([
+            {
+                'number.day': req.query.number
+            },
+            {
+                'number.month': req.query.number
+            },
+            {
+                'number.year': req.query.number
+            },
+            {
+                'number.trivia': req.query.number
+            },
+            {
+                'number.math': req.query.number
+            }
+        ])
     }
 
     if (req.query.user) {
@@ -101,7 +132,7 @@ exports.list = async (req, res, next) => {
         .populate('user')
         .populate('photo')
         .populate('taxonomies')
-        .sort({point: -1})
+        .sort(sort)
         .skip(pageSize * (page - 1))
         .limit(pageSize)
         .catch(err => {
@@ -129,8 +160,9 @@ exports.vote = async (req, res, next) => {
     return res.json(user.isVoted(req.instance))
 };
 
-exports.update = async (req, res) => {
-    let data = getBody(req, ['title', 'contentLong', 'contentShort', 'date', 'photo', 'source', 'textTaxonomies']);
+exports.update = async (req, res, next) => {
+    let user = await UserModel.findById(req.payload.id).catch(next);
+    let data = getBody(req, ['title', 'contentLong', 'contentShort', 'number', 'photo', 'source', 'textTaxonomies']);
     for (let field of Object.keys(data)) {
         if (typeof data[field] !== 'undefined') {
             if (field === 'source') {
@@ -158,7 +190,7 @@ exports.update = async (req, res) => {
     }
     req.instance.taxonomies = taxonomies
     req.instance.save().then(function (instance) {
-        return res.json(instance);
+        return res.json(instance.toJSONFor(user));
     }).catch(error => {
         let message = error && error.message ? error.message : 'Error';
         return responseError(res, message, {messageCode: 'error_get_all_user'});

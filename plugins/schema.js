@@ -4,7 +4,7 @@ const baseFields = ['createdAt', 'updatedAt']
 
 
 const SCHEMA = {
-    'facts': baseFields.concat(['contentShort', 'textTaxonomies', 'date', 'contentLong', 'search', 'photo']),
+    'facts': baseFields.concat(['contentShort', 'textTaxonomies', 'contentLong', 'search', 'photo', 'number']),
     'taxonomies': baseFields.concat(['title', 'description', 'slug', 'isObject', 'kind', 'search'])
 }
 
@@ -63,7 +63,7 @@ const fields = [
     },
     {
         field: 'updatedAt',
-        label: 'Ngày đăng',
+        label: 'Ngày cập nhập',
         type: 'date',
         show: false,
         update: true
@@ -95,6 +95,40 @@ const fields = [
         type: 'photo',
         show: false,
         update: true
+    },
+    {
+        field: 'number',
+        label: 'Số',
+        type: 'object',
+        show: false,
+        update: true,
+        fields: [
+            {
+                field: 'day',
+                label: 'day',
+                type: 'text'
+            },
+            {
+                field: 'month',
+                label: 'month',
+                type: 'text'
+            },
+            {
+                field: 'year',
+                label: 'year',
+                type: 'text'
+            },
+            {
+                field: 'math',
+                label: 'math',
+                type: 'text'
+            },
+            {
+                field: 'trivia',
+                label: 'trivia',
+                type: 'text'
+            }
+        ]
     }
 ]
 

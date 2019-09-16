@@ -6,7 +6,7 @@
         </div>
         <div class="columns is-slider is-mobile">
             <div class="column is-6" v-for="fact in facts" :key="fact._id">
-                <c-fact :cover="true" :fact="fact"></c-fact>
+                <c-fact class="fact-card" :cover="true" :fact="fact"></c-fact>
             </div>
             <div class="button left" @click="handle_click(true)">
                 <b-icon pack="fa" icon="arrow-left"></b-icon>

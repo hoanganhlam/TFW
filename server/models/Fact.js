@@ -11,13 +11,18 @@ const NewSchema = new Schema({
     title: String,
     contentShort: String,
     contentLong: String,
-    date: Date,
     time: {
         day: String,
         month: String,
         year: String
     },
-    media: String,
+    number: {
+        day: String,
+        month: String,
+        year: String,
+        math: String,
+        trivia: String
+    },
     photo: {type: mongoose.Schema.Types.ObjectId, ref: 'File'},
     user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
     votes: [
@@ -67,16 +72,15 @@ NewSchema.methods.toJSONFor = function (user) {
         contentLong: this.contentLong,
         createdAt: this.createdAt,
         updatedAt: this.updatedAt,
-        tagList: this.tagList,
         isVoted: user ? user.isVoted(this) : false,
         voteCount: this.point || 0,
-        user: this.user,
-        date: this.date,
+        user: this.user.toAuthJSONFor(),
         taxonomies: this.taxonomies,
         photo: this.photo,
         source: this.source,
         comments: this.comments,
-        time: this.time
+        time: this.time,
+        number: this.number
     };
 };
 

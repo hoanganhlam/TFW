@@ -1,7 +1,9 @@
 <template>
     <div class="tile is-ancestor" style="margin-top: 0; margin-bottom: 0">
-        <div class="tile is-vertical is-3" style="margin-top: 1rem">
-            <l-topic type="tag" label="Other tag" :data="topics"></l-topic>
+        <div class="tile is-vertical is-4">
+            <div class="sidebar">
+                <l-topic type="tag" label="Other tag" :data="topics"></l-topic>
+            </div>
         </div>
         <div class="tile is-parent is-main">
             <div style="width: 100%">

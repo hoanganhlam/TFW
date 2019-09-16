@@ -46,8 +46,15 @@
 </template>
 
 <script>
+    import DField from '../../../components/DisplayField'
+    import DItem from '../../../components/DisplayItem'
+
     export default {
         name: "ManagerModel",
+        components: {
+            'd-field': DField,
+            'd-item': DItem
+        },
         data: () => {
             return {
                 count: 0,

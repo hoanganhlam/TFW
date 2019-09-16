@@ -1,40 +1,24 @@
 <template>
     <div>
-        <b-switch v-if="setting.type ==='boolean'" type="is-success" size="is-small" v-model="data">Approve</b-switch>
-        <g-date :placeholder="setting.label" v-else-if="setting.type ==='date'" v-model="data"/>
-        <g-array :placeholder="setting.label" v-else-if="setting.type ==='array'" v-model="data"/>
-        <b-select :placeholder="setting.label" v-else-if="setting.type ==='option'" v-model="data">
+        <b-switch   v-if="setting.type ==='boolean'" type="is-success" size="is-small" v-model="data">Approve</b-switch>
+        <f-datetime v-else-if="setting.type ==='date'" :placeholder="setting.label"  v-model="data"/>
+        <f-array    v-else-if="setting.type ==='array'" :placeholder="setting.label" v-model="data"/>
+        <b-select   v-else-if="setting.type ==='option'" :placeholder="setting.label" v-model="data">
             <option v-for="option in setting.options" :value="option.value" :key="option.value">
                 {{ option.title }}
             </option>
         </b-select>
-        <g-select
-            :placeholder="setting.label"
-            v-else-if="setting.type ==='generic'"
-            :endpoint="setting.source" v-model="data"
-            :field="setting.showField"
-        ></g-select>
-        <g-tag
-            :placeholder="setting.label"
-            v-else-if="setting.type ==='tag'"
-            :endpoint="setting.source" v-model="data"
-            :field="setting.showField"></g-tag>
-        <b-input :placeholder="setting.label" v-else-if="setting.type ==='text'" v-model="data"></b-input>
-        <b-input :placeholder="setting.label" v-else-if="setting.type ==='number'" type="number" v-model="data"></b-input>
-        <gm-browser :placeholder="setting.label" v-else-if="setting.type ==='gallery'" v-model="data"></gm-browser>
-        <gm-upload :multiple="false" :placeholder="setting.label" v-else-if="setting.type ==='photo'" v-model="data"></gm-upload>
-        <g-object :placeholder="setting.label" v-else-if="setting.type ==='object'" v-model="data"></g-object>
-        <b-taginput
-            v-else-if="setting.type ==='hashtag'"
-            v-model="data"
-            ellipsis
-            icon-pack="fa"
-            icon="tag"
-            placeholder="Add a tag">
-        </b-taginput>
-        <div v-else>
-            {{data}}
-        </div>
+        <f-json     v-else-if="setting.type ==='object'"  v-model="data" :placeholder="setting.label" :p-fields="setting.fields"/>
+        <f-select   v-else-if="setting.type ==='generic'" :placeholder="setting.label" :endpoint="setting.source" v-model="data" :field="setting.showField"/>
+        <f-tag      v-else-if="setting.type ==='tag'" :placeholder="setting.label" :endpoint="setting.source" v-model="data" :field="setting.showField"></f-tag>
+        <b-input    v-else-if="setting.type ==='text'" :placeholder="setting.label" v-model="data"></b-input>
+        <b-input    v-else-if="setting.type ==='number'" :placeholder="setting.label" type="number"
+                 v-model="data"></b-input>
+        <gm-browser v-else-if="setting.type ==='gallery'" :placeholder="setting.label" v-model="data"/>
+        <gm-upload  v-else-if="setting.type ==='photo'" :multiple="false" :placeholder="setting.label" v-model="data"/>
+        <f-object   v-else-if="setting.type ==='object'" :placeholder="setting.label" v-model="data"/>
+        <b-taginput v-else-if="setting.type ==='hashtag'" v-model="data" ellipsis icon-pack="fa" icon="tag" placeholder="Add a tag"></b-taginput>
+        <div        v-else>{{data}}</div>
         <div v-if="descriptions.length">
             <hr class="is-small">
             <div style="margin-top: 1rem" class="example bt_32">
@@ -48,8 +32,25 @@
 </template>
 
 <script>
+    import BArray from './builder/Array'
+    import BDatetime from './builder/Array'
+    import BObject from './builder/Object'
+    import BSelect from './builder/Select'
+    import BTag from './builder/Tag'
+    import BJson from './builder/Json'
+
+
     export default {
         name: "DisplayField",
+        components: {
+            'f-array': BArray,
+            'f-datetime': BDatetime,
+            'f-object': BObject,
+            'f-select': BSelect,
+            'f-tag': BTag,
+            'f-json': BJson,
+
+        },
         props: {
             value: {},
             setting: {},

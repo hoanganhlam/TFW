@@ -13,17 +13,11 @@ module.exports = {
             lang: 'en',
         },
         title: process.env.npm_package_name || '',
+        titleTemplate: '%s - theFactWall.com',
         meta: [
             {charset: 'utf-8'},
             {name: 'viewport', content: 'width=device-width, initial-scale=1'},
             {hid: 'description', name: 'description', content: process.env.npm_package_description || ''}
-        ],
-        link: [
-            {rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'},
-            {
-                rel: 'stylesheet',
-                href: 'https://fonts.googleapis.com/css?family=Open+Sans:400,700|Space+Mono:400,700&display=swap&subset=vietnamese'
-            }
         ]
     },
     /*
@@ -43,7 +37,6 @@ module.exports = {
     */
     plugins: [
         {src: '@/plugins/components.js', ssr: true},
-        {src: '@/plugins/m_components.js', ssr: false},
         '@/plugins/mixins',
         '@/plugins/repository',
         '@/plugins/schema',

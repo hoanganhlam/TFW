@@ -1,6 +1,6 @@
 <template>
-    <div class="card"
-         v-bind:class="{'abs': cover, 'no-image': typeof fact.photo === 'undefined' || (fact.photo === null)}">
+    <div class="card fact-card"
+         v-bind:class="{'no-image': hasImage}">
         <div class="card-image">
             <figure class="image" v-if="fact.photo">
                 <img v-if="fact.photo && fact.photo.size" :alt="fact.photo.title"
@@ -8,8 +8,15 @@
             </figure>
         </div>
         <div class="card-content">
+            <div class="bt_16" v-if="fact.taxonomies.length && !cover">
+                <div class="buttons">
+                    <b-button tag="router-link" size="is-small"
+                              v-for="topic in fact.taxonomies" :key="topic._id" :to="`/topic/${topic.slug}/`"
+                              v-if="topic">{{topic.title}}</b-button>
+                </div>
+            </div>
             <p :class="cover ? '' : 'title is-4'">
-                <n-link :to="'/' + fact._id" class="bt_32">“{{fact.contentShort}}”</n-link>
+                <n-link :to="'/' + fact._id" class="bt_32" v-bind:class="{'title': hasImage}">“{{fact.contentShort}}”</n-link>
             </p>
             <template v-if="fact.user">
                 <small>
@@ -93,6 +100,9 @@
                     }
                 }
                 return null
+            },
+            hasImage() {
+                return typeof this.fact.photo === 'undefined' || (this.fact.photo === null)
             }
         },
         watch: {

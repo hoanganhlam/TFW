@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="bt_16" v-for="column in fields" :key="column.field">
-            <b-field :label="column.label">
+            <b-field label-position="inside"  :label="column.label">
                 <d-field :title="title" :setting="column" v-model="data[column.field]"></d-field>
             </b-field>
         </div>
@@ -17,6 +17,7 @@
 </template>
 
 <script>
+
     export default {
         name: "DisplayItem",
         props: {

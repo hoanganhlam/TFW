@@ -1,8 +1,8 @@
 <template>
     <div>
         <div class="columns is-multiline">
-            <div class="column is-6" v-for="fact in res.results" :key="fact._id">
-                <c-fact class="bt_16" :fact="fact" :cover="true"></c-fact>
+            <div class="column is-12" v-for="fact in res.results" :key="fact._id">
+                <c-fact class="bt_32" :fact="fact" :cover="false"></c-fact>
             </div>
         </div>
         <f-pagination icon-pack="fa" :total="res.total" :per-page="pageSize" :current="current" @change="fetch"/>

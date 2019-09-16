@@ -1,24 +1,17 @@
 <template>
-    <div class="tile is-ancestor" style="margin-top: 0; margin-bottom: 0">
-        <div class="tile is-vertical is-3" style="margin-top: 1rem">
-            <b-datepicker icon-pack="fa" icon="calendar" v-model="date"></b-datepicker>
-        </div>
-        <div class="tile is-parent is-main">
-            <div style="width: 100%">
-                <div style="margin-top: 2rem" class="example bt_32">
-                    <h1 class="button-left">{{title}} Facts</h1>
-                    <div class="button-right">
-                        <n-link :to="previous">previous day</n-link>
-                        <span style="margin: 0 0.5rem"></span>
-                        <n-link :to="next">next day</n-link>
-                    </div>
-                    <div class="example-component">
+    <div class="container small bt_32">
+        <div style="margin-top: 3rem" class="example bt_32">
+            <h1 class="button-left">{{title}}</h1>
+            <div class="button-right">
+                <n-link :to="previous">previous day</n-link>
+                <span style="margin: 0 0.5rem"></span>
+                <n-link :to="next">next day</n-link>
+            </div>
+            <div class="example-component">
 
-                    </div>
-                </div>
-                <l-fact :data="res" :query="query" :page-size="10"></l-fact>
             </div>
         </div>
+        <l-fact :data="res" :query="query" :page-size="10"></l-fact>
     </div>
 </template>
 
@@ -28,7 +21,7 @@
     export default {
         head() {
             return {
-                title: this.capitalizeFirst(this.title)
+                title: this.capitalizeFirst(this.title) + ' Facts'
             }
         },
         name: 'OnThisDay',

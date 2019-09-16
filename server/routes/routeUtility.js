@@ -114,7 +114,7 @@ function extract(result, dates, title) {
             let test = await FactModel.countDocuments({contentShort: contentShort})
             if (test === 0) {
                 FactModel.create({
-                    time: {
+                    number: {
                         day: date.format('DD'),
                         month: date.format('MM'),
                         year: date.format('YYYY'),

@@ -1,17 +1,17 @@
 <template>
     <div class="tile is-ancestor" style="margin-top: 0; margin-bottom: 0">
-        <div class="tile is-vertical is-3" style="margin-top: 1rem">
+        <div class="tile is-vertical is-4">
             <aside class="sidebar">
-                <div class="sidebar-menu">
+                <div class="sidebar-menu bt_32">
                     <h4 class="sidebar-label">Contributors</h4>
                     <div class="columns is-multiline is-mobile is-gapless">
-                        <div class="column is-4" v-for="contributor in contributors" :key="contributor._id">
+                        <div class="column is-3" v-for="contributor in contributors" :key="contributor._id">
                             <u-fact :data="contributor"></u-fact>
                         </div>
                     </div>
                 </div>
+                <l-topic label="Related Topics" :data="topics"></l-topic>
             </aside>
-            <l-topic label="Related Topics" :data="topics"></l-topic>
         </div>
         <div class="tile is-parent is-main">
             <div style="width: 100%">

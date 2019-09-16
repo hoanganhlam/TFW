@@ -43,7 +43,6 @@ NewSchema.methods.toJsonFor = function () {
         title: this.title,
         description: this.description,
         isObject: this.isObject,
-        kind: this.kind,
         tempPhotos
     }
 };

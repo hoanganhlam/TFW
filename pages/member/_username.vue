@@ -1,19 +1,12 @@
 <template>
-    <div class="tile is-ancestor" style="margin-top: 0; margin-bottom: 0">
-        <div class="tile is-vertical is-3" style="margin-top: 1rem">
-
-        </div>
-        <div class="tile is-parent is-main">
-            <div style="width: 100%">
-                <div style="margin-top: 2rem" class="example bt_32">
-                    <h1 class="button-left">{{convertName(user)}}</h1>
-                    <div class="example-component">
-                        <div class="content">{{user.bio}}</div>
-                    </div>
-                </div>
-                <l-fact :data="res"></l-fact>
+    <div class="container small">
+        <div style="margin-top: 3rem" class="example bt_32">
+            <h1 class="button-left">{{convertName(user)}}</h1>
+            <div class="example-component">
+                <div class="content">{{user.bio}}</div>
             </div>
         </div>
+        <l-fact :data="res"></l-fact>
     </div>
 </template>
 
