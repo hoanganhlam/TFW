@@ -1,5 +1,5 @@
 <template>
-    <div class="container small">
+    <div class="container small bt_16">
         <div style="margin-top: 3rem" class="example bt_32">
             <h1 class="button-left">{{convertName(user)}}</h1>
             <div class="example-component">

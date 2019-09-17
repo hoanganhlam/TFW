@@ -256,22 +256,6 @@ span + i {
     }
 }
 
-.logo {
-    font-size: 1.5em;
-    text-transform: lowercase;
-
-    .first {
-        font-size: 0.5em;
-        color: #868686;
-        font-weight: 100;
-    }
-
-    .second {
-        text-transform: uppercase;
-        color: #2bb24c;
-    }
-}
-
 .example {
     position: relative;
     display: flex;
@@ -316,6 +300,7 @@ span + i {
 
     .example-component {
         padding: 1rem;
+        background: #FFF;
     }
 
     .codeview {
@@ -358,10 +343,11 @@ hr.is-mini {
     .sidebar-bg {
         position: absolute;
         bottom: 0;
-        right: 50%;
-        left: 0;
+        left: 50%;
+        right: 0;
         top: 0;
         background: #f5f5f5;
+        border-left: 1px solid #DDD;
     }
 
     .fact-card {
@@ -383,6 +369,7 @@ hr.is-mini {
 @media screen and (max-width: 728px) {
     .navbar-menu {
         box-shadow: unset;
+
         .button {
             width: 100%;
         }
@@ -395,7 +382,6 @@ hr.is-mini {
     flex-shrink: 0;
     padding: 1rem 1rem;
     background: #f5f5f5;
-    border-right: 1px solid #DDD;
     height: 100%;
 
     .sidebar-menu {

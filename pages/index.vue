@@ -1,14 +1,8 @@
 <template>
     <div class="columns">
-        <div class="column is-4">
-            <aside class="sidebar">
-                <l-topic class="bt_32" label="#topic" :data="hotTopic"></l-topic>
-                <l-topic label="#hashtag" :data="hashtag"></l-topic>
-            </aside>
-        </div>
         <div class="column is-main">
             <div style="width: 100%">
-                <h1 style="margin-top: 1rem" class="title is-4 bt_32">TheFactWall.com, Welcome!</h1>
+                <h1 style="margin-top: 1rem; text-transform: uppercase;" class="title is-2 bt_32">Interesting facts by theFactWall.com</h1>
                 <div class="example bt_32">
                     <div class="button-left">On This day</div>
                     <div class="button-right">
@@ -45,6 +39,12 @@
                     <l-fact :data="newFact"></l-fact>
                 </div>
             </div>
+        </div>
+        <div class="column is-4">
+            <aside class="sidebar">
+                <l-topic class="bt_32" label="#topic" :data="hotTopic"></l-topic>
+                <l-topic label="#hashtag" :data="hashtag"></l-topic>
+            </aside>
         </div>
     </div>
 </template>

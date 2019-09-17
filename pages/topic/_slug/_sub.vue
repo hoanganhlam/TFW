@@ -1,5 +1,16 @@
 <template>
     <div class="tile is-ancestor" style="margin-top: 0; margin-bottom: 0">
+        <div class="tile is-parent is-main">
+            <div style="width: 100%">
+                <div style="margin-top: 2rem" class="example bt_32">
+                    <h1 class="button-left">{{title}}</h1>
+                    <div class="example-component">
+                        <div class="content">{{topic.description}}</div>
+                    </div>
+                </div>
+                <l-fact :data="fact"></l-fact>
+            </div>
+        </div>
         <div class="tile is-vertical is-4">
             <aside class="sidebar">
                 <div class="sidebar-menu bt_32">
@@ -12,17 +23,6 @@
                 </div>
                 <l-topic label="Related Topics" :data="topics"></l-topic>
             </aside>
-        </div>
-        <div class="tile is-parent is-main">
-            <div style="width: 100%">
-                <div style="margin-top: 2rem" class="example bt_32">
-                    <h1 class="button-left">{{title}}</h1>
-                    <div class="example-component">
-                        <div class="content">{{topic.description}}</div>
-                    </div>
-                </div>
-                <l-fact :data="fact"></l-fact>
-            </div>
         </div>
     </div>
 </template>

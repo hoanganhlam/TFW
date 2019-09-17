@@ -5,9 +5,7 @@
                 <b-navbar>
                     <template slot="brand">
                         <b-navbar-item tag="router-link" class="logo" to="/">
-                            <span class="second">The</span>
-                            <span class="second">FactWall</span>
-                            <span class="first">.com</span>
+                            <img src="/logo.png" alt="TheFactWall.com">
                         </b-navbar-item>
                     </template>
                     <template slot="start">
@@ -53,9 +51,9 @@
             </div>
         </header>
         <div>
+            <div class="sidebar-bg"></div>
             <div class="container medium">
                 <nuxt/>
-                <div></div>
             </div>
         </div>
         <footer class="footer">
