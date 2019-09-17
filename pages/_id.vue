@@ -3,7 +3,7 @@
         <div class="tile is-parent is-main">
             <c-fact class="fact-card" :fact="fact"></c-fact>
         </div>
-        <div class="tile is-parent is-main" style="background: #f5f5f5;">
+        <div class="tile is-parent is-main">
             <div style="width: 100%">
                 <div class="comments">
                     <div class="content">

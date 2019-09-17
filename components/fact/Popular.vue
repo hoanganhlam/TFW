@@ -5,14 +5,14 @@
             <span>Hot</span>
         </div>
         <div class="columns is-slider is-mobile">
-            <div class="column is-6" v-for="fact in facts" :key="fact._id">
-                <c-fact class="fact-card" :cover="true" :fact="fact"></c-fact>
+            <div class="column">
+                <c-fact class="fact-card" :cover="true" :fact="facts[0]"></c-fact>
             </div>
             <div class="button left" @click="handle_click(true)">
-                <b-icon pack="fa" icon="arrow-left"></b-icon>
+                <b-icon pack="fa" icon="angle-left"></b-icon>
             </div>
             <div class="button right" @click="handle_click(false)">
-                <b-icon pack="fa" icon="arrow-right"></b-icon>
+                <b-icon pack="fa" icon="angle-right"></b-icon>
             </div>
             <b-loading :is-full-page="false" :active.sync="loading" :can-cancel="true"></b-loading>
         </div>
@@ -72,7 +72,7 @@
             },
             async fetch() {
                 let query = {
-                    pageSize: 3,
+                    pageSize: 1,
                     ordering: 'popular',
                     page: this.current
                 }
@@ -87,12 +87,7 @@
 </script>
 <style lang="scss">
     .is-slider {
-        overflow: hidden;
         position: relative;
-
-        .column:first-child {
-            margin-left: -25%;
-        }
 
         .button {
             position: absolute;
@@ -101,11 +96,11 @@
             border-radius: 50%;
 
             &.left {
-                left: 10px;
+                left: -12px;
             }
 
             &.right {
-                right: 10px;
+                right: -12px;
             }
         }
     }

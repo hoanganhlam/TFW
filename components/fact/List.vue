@@ -5,7 +5,7 @@
                 <c-fact class="bt_32" :fact="fact" :cover="false"></c-fact>
             </div>
         </div>
-        <f-pagination icon-pack="fa" :total="res.total" :per-page="pageSize" :current="current" @change="fetch"/>
+        <f-pagination size="is-large" icon-pack="fa" :total="res.total" :per-page="pageSize" :current="current" @change="fetch"/>
     </div>
 </template>
 

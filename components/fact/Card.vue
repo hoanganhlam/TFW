@@ -48,7 +48,7 @@
         props: {
             fact: {},
             cover: {
-                default: false,
+                default: true,
                 type: Boolean
             }
         },

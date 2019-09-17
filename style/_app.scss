@@ -245,9 +245,7 @@ span + i {
 }
 
 .is-main {
-    background: #FFF;
     min-height: calc(100vh - 52px - 121px);
-    border-bottom: 1px solid #ddd;
 }
 
 .card.bt_16 {
@@ -261,10 +259,9 @@ span + i {
     display: flex;
     flex-direction: column;
     border: 1px solid #ffdd57;
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
-    border-bottom-left-radius: 4px;
     color: rgba(0, 0, 0, .7);
+    box-sizing: border-box;
+    background: #FFF;
 
     &:not(:last-child) {
         margin-bottom: 1.5rem;
@@ -285,22 +282,21 @@ span + i {
         text-transform: uppercase;
         vertical-align: top;
         padding: 4px 8px;
+
     }
 
     .button-left {
-        border-radius: 4px 4px 0 0;
         left: -1px;
     }
 
     .button-right {
         display: inline-flex;
-        border-radius: 4px 4px 0 0;
         right: -1px;
     }
 
     .example-component {
         padding: 1rem;
-        background: #FFF;
+
     }
 
     .codeview {
@@ -340,16 +336,6 @@ hr.is-mini {
 }
 
 @media screen and (min-width: 728px) {
-    .sidebar-bg {
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        right: 0;
-        top: 0;
-        background: #f5f5f5;
-        border-left: 1px solid #DDD;
-    }
-
     .fact-card {
         height: calc(100%);
 
@@ -381,7 +367,6 @@ hr.is-mini {
     flex-direction: column;
     flex-shrink: 0;
     padding: 1rem 1rem;
-    background: #f5f5f5;
     height: 100%;
 
     .sidebar-menu {

@@ -9,7 +9,7 @@ async function popular(user) {
         .populate('user')
         .populate('photo')
         .sort({point: -1})
-        .limit(3)
+        .limit(1)
         .catch(err => {
             console.log(err);
         })

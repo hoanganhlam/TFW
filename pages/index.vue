@@ -2,7 +2,7 @@
     <div class="columns">
         <div class="column is-main">
             <div style="width: 100%">
-                <h1 style="margin-top: 1rem; text-transform: uppercase;" class="title is-2 bt_32">Interesting facts by theFactWall.com</h1>
+                <h1 style="margin-top: 1rem;" class="title is-4 bt_32">Interesting facts by theFactWall.com</h1>
                 <div class="example bt_32">
                     <div class="button-left">On This day</div>
                     <div class="button-right">
