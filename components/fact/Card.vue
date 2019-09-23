@@ -1,6 +1,5 @@
 <template>
-    <div class="card fact-card"
-         v-bind:class="{'no-image': hasImage}">
+    <div class="card fact-card" v-bind:class="{'no-image': hasImage}">
         <div class="card-image">
             <figure class="image" v-if="fact.photo">
                 <img v-if="fact.photo && fact.photo.size" :alt="fact.photo.title"

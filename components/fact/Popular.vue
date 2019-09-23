@@ -1,18 +1,39 @@
 <template>
     <div>
-        <div class="is-bold bt_16">
-            <b-icon icon="mug-hot" pack="fa"></b-icon>
-            <span>Hot</span>
+        <div class="level">
+            <div class="level-left">
+                <div class="is-bold bt_16">
+                    <b-icon icon="mug-hot" pack="fa"></b-icon>
+                    <span>Hot</span>
+                </div>
+            </div>
+            <div class="level-right">
+                <div class="buttons">
+                    <div class="button left" @click="handle_click(true)">
+                        <b-icon pack="fa" icon="angle-left"></b-icon>
+                    </div>
+                    <div class="button right" @click="handle_click(false)">
+                        <b-icon pack="fa" icon="angle-right"></b-icon>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="columns is-slider is-mobile">
-            <div class="column">
-                <c-fact class="fact-card" :cover="true" :fact="facts[0]"></c-fact>
-            </div>
-            <div class="button left" @click="handle_click(true)">
-                <b-icon pack="fa" icon="angle-left"></b-icon>
-            </div>
-            <div class="button right" @click="handle_click(false)">
-                <b-icon pack="fa" icon="angle-right"></b-icon>
+        <div>
+            <div class="card">
+                <div class="card-content">
+                    <div class="media">
+                        <div class="media-left" v-if="facts[0].photo && facts[0].photo.size">
+                            <figure class="image is-96x96">
+                                <img :alt="facts[0].photo.title" :src="'/' + facts[0].photo.size['200_200']">
+                            </figure>
+                        </div>
+                        <div class="media-content">
+                            <div class="title">
+                                <n-link :to="'/' + facts[0]._id">{{facts[0].contentShort}}</n-link>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <b-loading :is-full-page="false" :active.sync="loading" :can-cancel="true"></b-loading>
         </div>
@@ -86,22 +107,4 @@
     }
 </script>
 <style lang="scss">
-    .is-slider {
-        position: relative;
-
-        .button {
-            position: absolute;
-            z-index: 2;
-            top: 40%;
-            border-radius: 50%;
-
-            &.left {
-                left: -12px;
-            }
-
-            &.right {
-                right: -12px;
-            }
-        }
-    }
 </style>

@@ -1,7 +1,7 @@
 <template>
     <div class="tile is-ancestor" style="margin-top: 0; margin-bottom: 0">
         <div class="tile is-parent is-main">
-            <c-fact class="fact-card" :fact="fact"></c-fact>
+            <c-fact class="fact-card" :fact="fact" :cover="false"></c-fact>
         </div>
         <div class="tile is-parent is-main">
             <div style="width: 100%">
